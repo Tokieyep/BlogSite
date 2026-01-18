@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-from datetime import timezone, datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from database import Base
 
-UTC = datetime.now(timezone.utc)
 
 class User(Base):
     __tablename__ = "users"
@@ -42,8 +41,8 @@ class Post(Base):
         index = True,
     )
     date_posted: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
-        default=lambda: datetime.now(UTC),
+        DateTime(timezone = True),
+        default=lambda: datetime.now(timezone.utc),
     )
 
     author: Mapped[User] = relationship(back_populates = "posts")
