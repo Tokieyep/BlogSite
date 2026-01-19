@@ -66,6 +66,10 @@
            data-bs-theme="dark">
         <div class="container">
           <a class="navbar-brand me-4" href="{{ url_for('home')}}">FastAPI Blog</a>
+          <form class="d-flex" action="/search/">
+            <input class="form-control me-2" name="query" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
           <button class="navbar-toggler"
                   type="button"
                   data-bs-toggle="collapse"

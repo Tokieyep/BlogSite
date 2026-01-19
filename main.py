@@ -351,6 +351,18 @@ async def delete_post(post_id: int, db: Annotated[AsyncSession, Depends(get_db)]
     await db.commit()
 
 
+@app.get("/search/", response_model = list[PostResponse])
+async def search(query: str | None, db: Annotated[AsyncSession, Depends(get_db)]):
+    result = await db.execute(
+        select(models.Post)
+        .options(selectinload(models.Post.author))
+        .where(models.Post.title.like(f'%{query}%'))
+    )
+    search_result = result.scalars().all()
+    return search_result
+
+
+
 @app.exception_handler(StarletteHTTPException)
 async def general_http_exception_handler(request: Request, exception: StarletteHTTPException):
     
