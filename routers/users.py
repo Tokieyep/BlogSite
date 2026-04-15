@@ -7,13 +7,13 @@ from sqlalchemy.orm import selectinload
 
 import models
 from database import get_db
-from schemas import PostResponse, UserCreate, UserResponse, UserUpdate
+from schemas import PostResponse, UserCreate, UserPublic, UserUpdate
 
 router = APIRouter()
 
 @router.post(
     "",
-    response_model = UserResponse,
+    response_model = UserPublic,
     status_code = status.HTTP_201_CREATED,
 )
 async def create_user(user: UserCreate, db: Annotated[AsyncSession, Depends(get_db)]):
@@ -47,7 +47,7 @@ async def create_user(user: UserCreate, db: Annotated[AsyncSession, Depends(get_
     return new_user
 
 
-@router.get("/{user_id}", response_model = UserResponse)
+@router.get("/{user_id}", response_model = UserPublic)
 async def get_user(user_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
     result = await db.execute(
         select(models.User).where(models.User.id == user_id)
@@ -77,7 +77,7 @@ async def get_user_posts(user_id: int, db: Annotated[AsyncSession, Depends(get_d
     return posts
 
 
-@router.patch("/{user_id}", response_model=UserResponse)
+@router.patch("/{user_id}", response_model=UserPublic)
 async def update_user(
     user_id: int,
     user_update: UserUpdate,
